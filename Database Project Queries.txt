@@ -1,0 +1,76 @@
+Table modification using alter table
+
+Add Column
+ALTER TABLE actor ADD COLUMN Actress varchar(100);
+
+DROP Column
+ALTER TABLE actor DROP COLUMN Actress;
+
+Add an attributes/column to table persons in any position of column:
+ALTER TABLE actor ADD COLUMN Actress_Name varchar (100) AFTER  Actor _Name;
+
+
+UPDATE Director
+SET Height_in_cm=170
+WHERE  Diretor_ID=109;
+
+
+MySQL WHERE Clause for String type value:
+
+SELECT `Producer_ID`, `Producer_Name`, `Academy_Award_Nomination`, `Academy_Award_Win`, `Filmography` FROM `producer` WHERE  Producer_Name='Alberto Grimaldi';
+
+Using comparison operators
+SELECT `Producer_ID`, `Producer_Name`, `Academy_Award_Nomination`, `Academy_Award_Win`, `Filmography` FROM `producer` WHERE Filmography>=20;
+
+Operator precedence MySQL evaluates the OR operators after the AND operators:
+SELECT `Writer_ID`, `Writer_Name`, `Date_of_Birth`, `Height_in_cm`, `Filmography` FROM `writer` WHERE Writer_Name='Jonathan Nolan' OR Writer_ID='1113' AND Filmography<=10;
+
+Find movie name who has first name ending with ‘T’
+SELECT `Movie_ID`, `Movie_Name`, `Movie_Release_YEAR`, `Academy_Award_Nomination`, `Academy_Award_Win`, `Movie_Duration_Min`, `IMDb_Rating` FROM `movie` WHERE Movie_Name LIKE '%T';
+
+AVG function
+SELECT AVG(Academy_Award_Win) AVG_Academy_Award_Win FROM actor;
+
+LENGTH function
+SELECT `Actor_ID`, `Actor_Name`, `Date_of_Birth`, `Height_in_cm`, `Academy_Award_Nomination`, `Academy_Award_Win`, `Filmography`,  LENGTH(Filmography) FROM actor;
+
+CONCAT function
+SELECT `Movie_ID`, `Movie_Name`, `Movie_Release_YEAR`, `Academy_Award_Nomination`, `Academy_Award_Win`, `Movie_Duration_Min`, `IMDb_Rating`,CONCAT(Movie_ID,'', Movie_Release_YEAR) FROM movie;
+
+
+INNER JOIN with WHERE clause
+
+SELECT actor.Actor_ID, actor.Actor_Name, actor.Date_of_Birth 
+FROM actor 
+INNER JOIN  movie ON actor.Actor_ID= movie.Movie_ID
+WHERE movie.Movie_ID=11105;
+
+INNER JOIN using GROUP BY for eliminating duplicate records.
+
+SELECT actor.Actor_ID, actor.Actor_Name, actor.Date_of_Birth 
+FROM actor 
+INNER JOIN  movie ON actor.Actor_ID= movie.Movie_ID
+INNER JOIN diretor ON movie.Movie_Name= diretor.Diretor_Name
+GROUP BY Actor_ID;
+
+
+
+DELIMITER //
+CREATE TRIGGER Filmo_graphy
+BEFORE INSERT ON actor
+FOR EACH ROW
+BEGIN 
+IF NEW.Filmography < 30 THEN 
+   SET NEW.Filmography = 40;
+END IF;
+END;
+DELIMITER ;
+
+
+manually
+BEGIN 
+IF NEW.Filmography < 30 THEN 
+   SET NEW.Filmography = 40;
+END IF;
+END
+
